@@ -3,8 +3,6 @@ import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { CheckoutFormCustom } from "./CheckoutFormCustom";
 
-// import "./App.css";
-
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 export const CheckoutPageCustom = () => {
@@ -30,7 +28,7 @@ export const CheckoutPageCustom = () => {
   };
 
   return (
-    <div className="App">
+    <>
       {clientSecret && (
         <Elements
           options={options as StripeElementsOptions | undefined}
@@ -39,6 +37,6 @@ export const CheckoutPageCustom = () => {
           <CheckoutFormCustom />
         </Elements>
       )}
-    </div>
+    </>
   );
 };

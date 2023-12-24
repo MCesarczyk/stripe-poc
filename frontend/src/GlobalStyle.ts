@@ -84,12 +84,4 @@ export const GlobalStyle = createGlobalStyle`
     min-height: 100vh;
     background: #b6722f;
   }
-
-  #checkout {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
-  }
 `;

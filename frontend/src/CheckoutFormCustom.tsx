@@ -6,6 +6,9 @@ import {
 } from "@stripe/react-stripe-js";
 import { StripePaymentElementOptions } from "@stripe/stripe-js";
 
+import "./CheckoutFormCustom.css";
+import styled from "styled-components";
+
 export const CheckoutFormCustom = () => {
   const stripe = useStripe();
   const elements = useElements();
@@ -77,19 +80,72 @@ export const CheckoutFormCustom = () => {
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
-      <PaymentElement
-        id="payment-element"
-        options={
-          paymentElementOptions as StripePaymentElementOptions | undefined
-        }
-      />
-      <button disabled={isLoading || !stripe || !elements} id="submit">
-        <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
-        </span>
-      </button>
-      {message && <div id="payment-message">{message}</div>}
-    </form>
+    <Wrapper>
+      <Column>
+        <Preview>
+          <h1>Checkout</h1>
+          <p>Complete your purchase</p>
+        </Preview>
+      </Column>
+      <Column>
+        <form id="payment-form" onSubmit={handleSubmit}>
+          <PaymentElement
+            id="payment-element"
+            options={
+              paymentElementOptions as StripePaymentElementOptions | undefined
+            }
+          />
+          <button disabled={isLoading || !stripe || !elements} id="submit">
+            <span id="button-text">
+              {isLoading ? (
+                <div className="spinner" id="spinner"></div>
+              ) : (
+                "Pay now"
+              )}
+            </span>
+          </button>
+          {message && <div id="payment-message">{message}</div>}
+        </form>
+      </Column>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.main`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+
+  @media (max-width: 765px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Column = styled.div`
+  &:nth-of-type(odd) {
+    text-align: end;
+
+    @media (max-width: 765px) {
+      text-align: unset;
+    }
+  }
+
+  &:nth-of-type(even) {
+    background-color: #fff;
+  }
+`;
+
+const Preview = styled.div`
+  display: grid;
+  align-content: center;
+  height: 100%;
+  min-width: 400px;
+  max-width: 600px;
+  padding: 80px;
+
+  @media (max-width: 765px) {
+    min-width: 100%;
+    max-width: 100%;
+    padding: 40px;
+  }
+`;
