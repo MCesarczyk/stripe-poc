@@ -1,11 +1,10 @@
 import { Request, Response } from 'express';
-const stripe = require('stripe')('sk_test_51NydosCxMXw7GjawGOwp7etQENGqmjNRwh0fMmDP9nTdi3ApgfLPTPMeXoNiIFHs969mdy1sPd15rLe4fSKRWlk90091vKlK6K');
+require('dotenv').config();
+const stripe = require('stripe')(process.env.SECRET_KEY);
 const express = require('express');
 const cors = require('cors');
 const app = express();
 app.use(express.static('public'));
-
-const YOUR_DOMAIN = 'http://localhost:3000';
 
 app.use(cors())
 
@@ -23,11 +22,9 @@ app.post('/create-checkout-session', async (_req: Request, res: Response) => {
       },
     ],
     mode: 'subscription',
-    return_url: `${YOUR_DOMAIN}/return?session_id={CHECKOUT_SESSION_ID}`,
+    return_url: `${process.env.FRONTEND_URL}/return?session_id={CHECKOUT_SESSION_ID}`,
     automatic_tax: { enabled: true },
   });
-
-  console.log(session.client_secret);
 
   res.send({ clientSecret: session.client_secret });
 });
@@ -41,4 +38,4 @@ app.get('/session-status', async (req: Request, res: Response) => {
   });
 });
 
-app.listen(4242, () => console.log('Running on port 4242'));
+app.listen(process.env.PORT, () => console.log(`Running on port ${process.env.PORT} 🥳`));
